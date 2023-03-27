@@ -19,6 +19,8 @@ public:
     Player(/* args */);
     virtual ~Player();
 
+    const sf::Vector2f& getPos() const;
+
     //Functions 
     void move(const float dirX, const float dirY);
     void update();

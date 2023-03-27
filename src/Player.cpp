@@ -12,6 +12,11 @@ Player::~Player()
 {
 }
 
+const sf::Vector2f &Player::getPos() const
+{
+    return this->sprite.getPosition();
+}
+
 void Player::initTexture()
 {
     if(!this->texture.loadFromFile(std::string(TEXTUREPATH)+ std::string("squirrel.png")))
