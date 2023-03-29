@@ -132,7 +132,7 @@ void Game::update()
 {
     this->updatePollEvents();
     this->updateInput();
-    this->player->update(this->window)
+    this->player->update(this->window);
 }
 
 void Game::render()
