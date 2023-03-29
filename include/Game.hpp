@@ -9,6 +9,10 @@ private:
     sf::RenderWindow* window;
     Player* player;
 
+    // Background Texture for game
+    sf::Texture textureBackground;
+    sf::Sprite spriteBackground;
+
     //Resourcer
     std::map<std::string,sf::Texture*> texture;
     std::vector<Peanut*> peanut;
@@ -16,6 +20,7 @@ private:
     void initPlayer();
     void initTexture();
     void initWindow();
+    void initWindowBackground();
 
 
 public:

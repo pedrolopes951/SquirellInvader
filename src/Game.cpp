@@ -5,6 +5,7 @@ Game::Game()
     this->initWindow();
     this->initPlayer();
     this->initTexture();
+    this->initWindowBackground();
 }
 
 Game::~Game()
@@ -33,10 +34,18 @@ void Game::initPlayer()
 void Game::initTexture()
 {
     this->texture["Peanut"] = new sf::Texture();
+
+    if(!this->textureBackground.loadFromFile(std::string(TEXTUREPATH)+std::string("grass.jpeg")))
+    {
+        std::cerr << "Load texture from file failed\n";
+    }
+
+
     if(!this->texture["Peanut"]->loadFromFile(std::string(TEXTUREPATH)+std::string("bullet.png")))
     {
         std::cerr << "Load texture from file failed\n";
     }
+    
 }
 
 void Game::initWindow()
@@ -44,6 +53,20 @@ void Game::initWindow()
     this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Space Invaders", sf::Style::Titlebar | sf::Style::Close);
     this->window->setFramerateLimit(144);
     this->window->setVerticalSyncEnabled(false);
+}
+
+void Game::initWindowBackground()
+{
+    this->spriteBackground.setTexture(this->textureBackground);
+
+    
+    float x_scale = this->window->getSize().x / this->spriteBackground.getGlobalBounds().width;
+
+    // std::cout << "X scale " << this->spriteBackground.getGlobalBounds().width << "\n";
+    float y_scale = this->window->getSize().y / this->spriteBackground.getGlobalBounds().height;
+    // std::cout << "Y scale " << this->spriteBackground.getGlobalBounds().height << "\n";
+    this->spriteBackground.setScale(x_scale,y_scale);
+
 }
 
 void Game::run()
@@ -109,11 +132,14 @@ void Game::update()
 {
     this->updatePollEvents();
     this->updateInput();
+    this->player->update(this->window)
 }
 
 void Game::render()
 {
     this->window->clear();
+
+    this->window->draw(this->spriteBackground);
 
     // Draw it
     this->player->render(this->window);
