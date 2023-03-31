@@ -15,8 +15,11 @@ private:
 
     float moveSpeed;
 
+    // WIndow coord
+    sf::Vector2f window_cords;
+
 public:
-    Player(/* args */);
+    Player(sf::Vector2f windows_cords);
     virtual ~Player();
 
     const sf::Vector2f& getPos() const;
@@ -24,7 +27,7 @@ public:
     
     //Functions 
     void updateWindowBoundsColision(const sf::RenderTarget *target);
-    void move(const float dirX, const float dirY);
+    void movePlayer(const float dirX, const float dirY);
     void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
 };

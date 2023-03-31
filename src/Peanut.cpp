@@ -20,10 +20,14 @@ Peanut::~Peanut()
 {
 }
 
+const sf::FloatRect Peanut::getBounds() const
+{
+    return this->shape.getGlobalBounds();
+}
+
 void Peanut::update()
 {
     this->shape.move(this->movementSpeed* this->direction);
-
 }
 
 void Peanut::render(sf::RenderTarget *target)

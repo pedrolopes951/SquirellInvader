@@ -28,17 +28,14 @@ Game::~Game()
 }
 void Game::initPlayer()
 {
-    this->player = new Player;
+    sf::Vector2f window_size(this->window->getSize().x,this->window->getSize().y);
+    this->player = new Player(window_size);
 }
 
 void Game::initTexture()
 {
     this->texture["Peanut"] = new sf::Texture();
 
-    if(!this->textureBackground.loadFromFile(std::string(TEXTUREPATH)+std::string("grass.jpeg")))
-    {
-        std::cerr << "Load texture from file failed\n";
-    }
 
 
     if(!this->texture["Peanut"]->loadFromFile(std::string(TEXTUREPATH)+std::string("bullet.png")))
@@ -46,6 +43,10 @@ void Game::initTexture()
         std::cerr << "Load texture from file failed\n";
     }
     
+    if(!this->textureBackground.loadFromFile(std::string(TEXTUREPATH)+std::string("grass.jpeg")))
+    {
+        std::cerr << "Load texture from file failed\n";
+    }
 }
 
 void Game::initWindow()
@@ -108,23 +109,40 @@ void Game::updateInput()
 {
     // Move player
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        this->player->move(-1.f, 0.f);
+        this->player->movePlayer(-1.f, 0.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        this->player->move(1.f, 0.f);
+        this->player->movePlayer(1.f, 0.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        this->player->move(0.f, -1.f);
+        this->player->movePlayer(0.f, -1.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        this->player->move(0.f, 1.f);
+        this->player->movePlayer(0.f, 1.f);
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-        this->peanut.push_back(new Peanut(this->texture["Peanut"],this->player->getPos().x,this->player->getPos().y,0.f,0.f,0.f));
+        this->peanut.push_back(new Peanut(this->texture["Peanut"],this->player->getPos().x,this->player->getPos().y,0.f,-1.f,5.f));
 }
 
 void Game::updatePeanut()
 {
+    unsigned counter = 0;
     for (auto *i : this->peanut)
     {
         i->update();
+        // Bullet culling (Top of screen)
+        if(i->getBounds().top + i->getBounds().height < 0.f)
+        {
+            // Delete the bullter 
+            delete this->peanut.at(counter);
+            this->peanut.erase(this->peanut.begin()+ counter);
+            --counter;
+
+
+            // Check memory is being deleted 
+
+            std::cout << this->peanut.size() << "\n";
+        }
+        ++counter;
+    
     }
+
     
 }
 
@@ -133,6 +151,7 @@ void Game::update()
     this->updatePollEvents();
     this->updateInput();
     this->player->update(this->window);
+    this->updatePeanut();
 }
 
 void Game::render()
