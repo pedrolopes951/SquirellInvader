@@ -4,6 +4,8 @@ Player::Player(sf::Vector2f windows_cords)
 {
     this->window_cords = windows_cords;
     this->moveSpeed = 10.f;
+    this->attackCooldownMax = 10.f;
+    this->attackCooldown = this->attackCooldownMax;
     this->initTexture();
     this->initSprite();
 }
@@ -15,6 +17,16 @@ Player::~Player()
 const sf::Vector2f &Player::getPos() const
 {
     return this->sprite.getPosition();
+}
+
+const bool Player::canAttack()
+{
+    if(this->attackCooldown >= this->attackCooldownMax)
+    {
+        this->attackCooldown = 0.f;
+        return true;
+    }
+    return false;
 }
 
 void Player::initTexture()
@@ -77,6 +89,15 @@ void Player::movePlayer(const float dirX, const float dirY)
 void Player::update(sf::RenderTarget *target)
 {
     this->updateWindowBoundsColision(target);
+    this->updateAttack();
+}
+void Player::updateAttack()
+{
+    if(this->attackCooldown < this->attackCooldownMax)
+    {
+        this->attackCooldown += 0.5f;
+    }
+    
 }
 
 void Player::render(sf::RenderTarget *target)
