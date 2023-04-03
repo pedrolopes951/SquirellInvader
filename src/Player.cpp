@@ -34,7 +34,7 @@ void Player::initSprite()
     this->sprite.scale(0.9f, 0.9f);
 
     // Set origin in the center of sprite
-    float center_x = this->sprite.getTexture()->getSize().x * 0.5;
+    float center_x = this->sprite.getTexture()->getSize().x * 0.35;
     float center_y = this->sprite.getTexture()->getSize().y * 0.5;
 
     this->sprite.setOrigin(center_x, center_y);
@@ -47,31 +47,26 @@ void Player::initSprite()
 void Player::updateWindowBoundsColision(const sf::RenderTarget *target)
 {
     // Colisition bound to left side of screen
-    // std::cout << "Left : "<< this->sprite.getGlobalBounds().left << ", Top : " << this->sprite.getGlobalBounds().top << std::endl;
-    std::cout << "Origin x : " << this->sprite.getOrigin().x << std::endl;
-    std::cout << "Origin y : " << this->sprite.getOrigin().y << std::endl;
-    if (this->sprite.getPosition().x  -  this->sprite.getOrigin().x <= 0)
+    if (this->sprite.getPosition().x - this->sprite.getOrigin().x <= 0.f)
     {
-        
         this->sprite.setPosition(this->sprite.getOrigin().x, this->sprite.getPosition().y);
-
     }
 
     // // Right wall
-    // if(this->sprite.getGlobalBounds().left + this->sprite.getGlobalBounds().width - 50.f /* Discont a bit */ >= this->sprite.getGlobalBounds()target->getSize().x)
-    // {
-    //     this->sprite.setPosition(target->getSize().x-this->sprite.getGlobalBounds().width + 50.f,this->sprite.getGlobalBounds().top);
-    // }
+    if (this->sprite.getPosition().x + this->sprite.getOrigin().x >= target->getSize().x)
+    {
+        this->sprite.setPosition(target->getSize().x - this->sprite.getOrigin().x, this->sprite.getPosition().y);
+    }
     // // TOP
-    // if(this->sprite.getGlobalBounds().top <= 0.f)
-    // {
-    //     this->sprite.setPosition(this->sprite.getGlobalBounds().left,0.f);
-    // }
-    // // Bottom
-    // if(this->sprite.getGlobalBounds().top + this->sprite.getGlobalBounds().height >= target->getSize().y)
-    // {
-    //     this->sprite.setPosition(this->sprite.getGlobalBounds().left,target->getSize().y-this->sprite.getGlobalBounds().height);
-    // }
+    if (this->sprite.getPosition().y - this->sprite.getOrigin().y <= 0.f)
+    {
+        this->sprite.setPosition(this->sprite.getPosition().x, this->sprite.getOrigin().y);
+    }
+    // Bottom
+    if (this->sprite.getPosition().y + this->sprite.getOrigin().y >= target->getSize().y)
+    {
+        this->sprite.setPosition(this->sprite.getPosition().x,target->getSize().y - this->sprite.getOrigin().y );
+    }
 }
 
 void Player::movePlayer(const float dirX, const float dirY)
