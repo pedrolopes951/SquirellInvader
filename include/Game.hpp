@@ -2,12 +2,17 @@
 #include "stdafx.hpp"
 #include "Player.hpp"
 #include "Peanut.hpp"
+#include "Enemies.hpp"
+
 class Game
 {
 private:
     // Window
     sf::RenderWindow* window;
     Player* player;
+
+    // Enemies
+    std::vector<Enemies*> enemies;
 
     // Background Texture for game
     sf::Texture textureBackground;
@@ -18,6 +23,7 @@ private:
     std::vector<Peanut*> peanut;
 
     void initPlayer();
+    void initEnemie();
     void initTexture();
     void initWindow();
     void initWindowBackground();

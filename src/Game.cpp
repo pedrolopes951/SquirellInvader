@@ -4,6 +4,7 @@ Game::Game()
 {
     this->initWindow();
     this->initPlayer();
+    this->initEnemie();
     this->initTexture();
     this->initWindowBackground();
 }
@@ -12,7 +13,6 @@ Game::~Game()
 {
     delete this->window;
     delete this->player;
-
     // Delete texture
     for (auto &i : this->texture)
     {
@@ -23,11 +23,22 @@ Game::~Game()
     {
         delete i;
     }
+    for (auto &i : this->enemies)
+    {
+        delete i;
+    }
+    
 }
 void Game::initPlayer()
 {
     sf::Vector2f window_size(this->window->getSize().x, this->window->getSize().y);
     this->player = new Player(window_size);
+}
+
+void Game::initEnemie()
+{
+    this->enemies.push_back(new Enemies(20.f,20.f));
+
 }
 
 void Game::initTexture()
@@ -161,6 +172,12 @@ void Game::render()
     {
         i->render(this->window);
     }
+
+    for (auto *i : this->enemies)
+    {
+        i->render(this->window);
+    }
+
 
     this->window->display();
 }
