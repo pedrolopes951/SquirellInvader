@@ -13,6 +13,15 @@ private:
 
     // Enemies
     std::vector<Enemies*> enemies;
+    float spawnTimerMax;
+    float spawnTimer;
+    float initXPosEnemie;
+    float initYPosEnemie;
+
+    // GUI 
+    sf::Font font;
+    sf::Text pointText;
+    unsigned points;
 
     // Background Texture for game
     sf::Texture textureBackground;
@@ -23,7 +32,9 @@ private:
     std::vector<Peanut*> peanut;
 
     void initPlayer();
+    void initSystems();
     void initEnemie();
+    void initGUI();
     void initTexture();
     void initWindow();
     void initWindowBackground();
@@ -39,8 +50,12 @@ public:
 
     void updatePollEvents();
     void updateInput();
+    void updateGUI();
+    void updateEnemie();
+    void updateCombat(); 
     void updatePeanut();
     void update();
     void render();
+    void renderGUI();
 };
 

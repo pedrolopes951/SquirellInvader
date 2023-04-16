@@ -19,6 +19,16 @@ const sf::Vector2f &Player::getPos() const
     return this->sprite.getPosition();
 }
 
+const sf::FloatRect Player::getBonds() const
+{
+    return this->sprite.getGlobalBounds();
+}
+
+const sf::Sprite &Player::getSprite() const
+{
+    return this->sprite;
+}
+
 const bool Player::canAttack()
 {
     if(this->attackCooldown >= this->attackCooldownMax)

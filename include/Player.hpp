@@ -25,6 +25,8 @@ public:
     virtual ~Player();
 
     const sf::Vector2f& getPos() const;
+    const sf::FloatRect getBonds() const;
+    const sf::Sprite& getSprite() const;
     const bool canAttack();
     
     //Functions 
