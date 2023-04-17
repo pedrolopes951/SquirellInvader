@@ -10,6 +10,7 @@ private:
     // Window
     sf::RenderWindow* window;
     Player* player;
+    bool playerAlive;
 
     // Enemies
     std::vector<Enemies*> enemies;
@@ -17,11 +18,17 @@ private:
     float spawnTimer;
     float initXPosEnemie;
     float initYPosEnemie;
+    
 
     // GUI 
     sf::Font font;
     sf::Text pointText;
     unsigned points;
+
+    // Player HpBar GUI
+    sf::RectangleShape playerHpBar;
+    sf::RectangleShape playerHpBarground;
+
 
     // Background Texture for game
     sf::Texture textureBackground;
@@ -47,6 +54,7 @@ public:
     // Functions 
     void run();
     const bool running() const;
+    const bool alive() ;
 
     void updatePollEvents();
     void updateInput();

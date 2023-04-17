@@ -3,6 +3,7 @@
 Game::Game()
 {
     this->initWindow();
+    this->initSystems();
     this->initPlayer();
     this->initEnemie();
     this->initTexture();
@@ -33,6 +34,7 @@ void Game::initPlayer()
 {
     sf::Vector2f window_size(this->window->getSize().x, this->window->getSize().y);
     this->player = new Player(window_size);
+    this->playerAlive = true;
 }
 
 void Game::initSystems()
@@ -56,7 +58,13 @@ void Game::initGUI()
     this->pointText.setFont(this->font);
     this->pointText.setCharacterSize(60);
     this->pointText.setFillColor(sf::Color::Red);
-    this->pointText.setString("TEST");
+    // Init player GUI
+    this->playerHpBar.setSize(sf::Vector2f(300.f,25.f));
+    this->playerHpBar.setFillColor(sf::Color::Red);
+    this->playerHpBar.setPosition(sf::Vector2f(20.f,100.f));
+
+    this->playerHpBarground = this->playerHpBar;
+    this->playerHpBarground .setFillColor(sf::Color(25,25,25,200));
 }
 
 void Game::initTexture()
@@ -95,7 +103,7 @@ void Game::initWindowBackground()
 
 void Game::run()
 {
-    while (this->window->isOpen())
+    while (this->window->isOpen() && this->alive())
     {
         this->update();
         this->render();
@@ -105,6 +113,15 @@ void Game::run()
 const bool Game::running() const
 {
     return this->window->isOpen();
+}
+
+const bool Game::alive() 
+{
+    if(this->player->getHp() <= 0)
+    {
+        this->playerAlive = false;
+    }
+    return this->playerAlive;
 }
 
 void Game::updatePollEvents()
@@ -153,6 +170,14 @@ void Game::updateGUI()
     ss << "Points : " << this->points;
 
     this->pointText.setString(ss.str());
+
+    //Update player GUI
+    float hpPercent = static_cast<float>(this->player->getHp() / this->player->getHpMax());
+    this->playerHpBar.setSize(sf::Vector2f(this->playerHpBar.getSize().x*hpPercent,this->playerHpBar.getSize().y));
+
+
+    
+
 }
 
 void Game::updateEnemie()
@@ -176,6 +201,8 @@ void Game::updateEnemie()
         }
         else if (i->getBounds().intersects(this->player->getBonds()))
         {
+            this->player->setHp(this->enemies.at(counter)->getDamage());
+            
             delete this->enemies[counter];
             this->enemies.erase(this->enemies.begin() + counter);
             --counter;
@@ -269,4 +296,7 @@ void Game::render()
 void Game::renderGUI()
 {
     this->window->draw(this->pointText);
+    this->window->draw(this->playerHpBarground);
+    this->window->draw(this->playerHpBar);
+
 }

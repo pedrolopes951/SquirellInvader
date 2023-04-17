@@ -30,6 +30,7 @@ public:
     ~Enemies();
     const sf::FloatRect getBounds() const;
     const int& getPoint() const;
+    const int& getDamage() const;
     void update();
     void render(sf::RenderTarget* target);
 };

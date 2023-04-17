@@ -24,6 +24,11 @@ const int &Enemies::getPoint() const
     return this->points;
 }
 
+const int &Enemies::getDamage() const
+{
+    return this->damage;
+}
+
 void Enemies::initVariables()
 {
     this->pointCount = rand() % 8  +3; // min 3 and max 10 
