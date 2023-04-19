@@ -4,6 +4,9 @@ Enemies::Enemies(float pos_x, float pos_y): enemyShape(rand()%20 + 40,rand()%8),
 {
 
     this->initVariables();
+    this->initTexture();
+    this->initSprite();
+    this->enemyShape.setTexture(&this->enemyTexture);
     this->enemyShape.setRadius(this->pointCount*4);
     this->enemyShape.setPointCount(this->pointCount);
     this->enemyShape.setPosition(pos_x,pos_y);
@@ -44,13 +47,18 @@ void Enemies::initVariables()
 
 void Enemies::initSprite()
 {
-
+    this->enemySprite.setTexture(this->enemyTexture);
 }
 
 
 
 void Enemies::initTexture()
 {
+    if (!this->enemyTexture.loadFromFile(std::string(TEXTUREPATH) + std::string("dog.jpeg")))
+    {
+        std::cerr << "Load texture from file failed\n";
+    }
+
 }
 
 void Enemies::update()

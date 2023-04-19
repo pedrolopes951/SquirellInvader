@@ -5,7 +5,7 @@ Player::Player(sf::Vector2f windows_cords)
     this->window_cords = windows_cords;
     this->moveSpeed = 10.f;
     this->attackCooldownMax = 10.f;
-    this->hpMax = 10;
+    this->hpMax = 100;
     this->hp = this->hpMax;
     this->attackCooldown = this->attackCooldownMax;
     this->initTexture();
@@ -43,7 +43,14 @@ const sf::Sprite &Player::getSprite() const
 
 void Player::setHp(int newHp)
 {
-    this->hp -= newHp;
+    this->hp = newHp;
+}
+
+void Player::looseHp(int damageHp)
+{
+    this->hp -= damageHp;
+    if(this->hp <0)
+        this->hp = 0;
 }
 
 const bool Player::canAttack()

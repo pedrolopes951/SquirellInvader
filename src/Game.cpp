@@ -58,10 +58,25 @@ void Game::initGUI()
     this->pointText.setFont(this->font);
     this->pointText.setCharacterSize(60);
     this->pointText.setFillColor(sf::Color::Red);
+
+    //Game Over TExt 
+    this->GameOverText.setFont(this->font);
+    this->GameOverText.setCharacterSize(100);
+    this->GameOverText.setFillColor(sf::Color::Red);
+    this->GameOverText.setString("GAME OVER!");
+    this->GameOverText.setPosition(this->window->getSize().x/2.f - this->GameOverText.getGlobalBounds().width/2.f,
+    this->window->getSize().y/2.f - this->GameOverText.getGlobalBounds().height/2.f);
+
     // Init player GUI
+    this->HpText.setFont(this->font);
+    this->HpText.setCharacterSize(60);
+    this->HpText.setFillColor(sf::Color::Red);
+    this->HpText.setPosition(0.f,60.f);
+
     this->playerHpBar.setSize(sf::Vector2f(300.f,25.f));
+    this->playerHpBar.setScale(0.8f,0.8f);
     this->playerHpBar.setFillColor(sf::Color::Red);
-    this->playerHpBar.setPosition(sf::Vector2f(20.f,100.f));
+    this->playerHpBar.setPosition(sf::Vector2f(100.f,100.f));
 
     this->playerHpBarground = this->playerHpBar;
     this->playerHpBarground .setFillColor(sf::Color(25,25,25,200));
@@ -103,9 +118,11 @@ void Game::initWindowBackground()
 
 void Game::run()
 {
-    while (this->window->isOpen() && this->alive())
+    while (this->window->isOpen())
     {
-        this->update();
+        this->updatePollEvents();
+        if(this->alive())
+            this->update();
         this->render();
     }
 }
@@ -172,8 +189,10 @@ void Game::updateGUI()
     this->pointText.setString(ss.str());
 
     //Update player GUI
-    float hpPercent = static_cast<float>(this->player->getHp() / this->player->getHpMax());
-    this->playerHpBar.setSize(sf::Vector2f(this->playerHpBar.getSize().x*hpPercent,this->playerHpBar.getSize().y));
+    this->HpText.setString("Hp : \n"); 
+
+    float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
+    this->playerHpBar.setSize(sf::Vector2f(300.f*hpPercent,this->playerHpBar.getSize().y));
 
 
     
@@ -201,7 +220,7 @@ void Game::updateEnemie()
         }
         else if (i->getBounds().intersects(this->player->getBonds()))
         {
-            this->player->setHp(this->enemies.at(counter)->getDamage());
+            this->player->looseHp(this->enemies.at(counter)->getDamage());
             
             delete this->enemies[counter];
             this->enemies.erase(this->enemies.begin() + counter);
@@ -261,7 +280,6 @@ void Game::updatePeanut()
 
 void Game::update()
 {
-    this->updatePollEvents();
     this->updateInput();
     this->player->update(this->window);
     this->updatePeanut();
@@ -290,12 +308,19 @@ void Game::render()
     }
 
     this->renderGUI();
+
+    // Game Over Scren 
+    if(!this->alive())
+    {
+        this->window->draw(this->GameOverText);
+    }
     this->window->display();
 }
 
 void Game::renderGUI()
 {
     this->window->draw(this->pointText);
+    this->window->draw(this->HpText);
     this->window->draw(this->playerHpBarground);
     this->window->draw(this->playerHpBar);
 

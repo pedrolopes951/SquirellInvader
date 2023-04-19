@@ -32,6 +32,7 @@ public:
     const sf::FloatRect getBonds() const;
     const sf::Sprite& getSprite() const;
     void setHp(int newHp);
+    void looseHp(int damageHp);
     const bool canAttack();
     
     //Functions 

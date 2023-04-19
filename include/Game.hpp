@@ -23,6 +23,8 @@ private:
     // GUI 
     sf::Font font;
     sf::Text pointText;
+    sf::Text HpText;
+    sf::Text GameOverText;
     unsigned points;
 
     // Player HpBar GUI
